@@ -1,6 +1,4 @@
-import json
 from http.server import HTTPServer
-import datetime
 from RequestHandler import RequestHandler
 
 def run_server():

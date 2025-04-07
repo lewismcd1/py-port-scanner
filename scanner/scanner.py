@@ -1,5 +1,4 @@
 import nmap
-import json
 import requests
 import ipaddress
 
