@@ -7,6 +7,7 @@ import ipaddress
 # Define targets, which can be either a single IP address or a CIDR block
 TARGET_INPUT = "127.0.0.1"  # Replace with your input (e.g., "127.0.0.1" or "127.0.0.0/24")
 
+
 # Check if the input is a CIDR block or a single IP address
 try:
     network = ipaddress.ip_network(TARGET_INPUT, strict=False)
@@ -14,9 +15,9 @@ try:
 except ValueError:
     # If it's not a valid CIDR block, treat it as a single IP address
     TARGETS = [TARGET_INPUT]
-RECEIVER_URL = "http://127.0.0.1:5001/report"
+# RECEIVER_URL = "http://127.0.0.1:5001/report"
 # Uncomment to use for Docker container
-# RECEIVER_URL = "http://receiver:5001/report"
+RECEIVER_URL = "http://receiver:5001/report"
 
 # Port severity classification
 SEVERITY_LEVELS = {
@@ -52,27 +53,33 @@ def classify_host_severity(open_ports):
 def scan_host(host):
     """Scans a given host for open TCP and UDP ports using nmap."""
     nm = nmap.PortScanner()
-    # Check if the host is up
-    if nm[host].state() != "up":
-        print(f"Host {host} is down or not reachable.")
-        return None, None
-    
-    nm.scan(host, arguments="-p 20-5432 -sS -sU") # Scan TCP and UDP ports 20-5432
+    try:
+        # Perform the scan
+        nm.scan(host, arguments="-p 22,23,445,3389,80,443,3306,5432,25,110,139,8080 -sS -sU")  # Scan specified TCP and UDP ports
 
-    # Initialize a dictionary to store open ports
-    open_ports = {"tcp": [], "udp": []}
-    
-    # Iterate over scanned protocols and ports
-    for proto in nm[host].all_protocols():
-        for port in nm[host][proto]:
-            # Classify the port and add it to the open_ports list
-            port_info = {"port": port, "severity": classify_port(port)}
-            open_ports[proto].append(port_info)
-    
-    # Calculate the host severity based on open ports
-    host_severity = classify_host_severity(open_ports)
-    
-    return open_ports, host_severity
+        # Check if the scan results contain the host
+        if host not in nm.all_hosts():
+            print(f"Host {host} is down or not reachable.")
+            return {"tcp": [], "udp": []}, "low"
+
+        # Initialize a dictionary to store open ports
+        open_ports = {"tcp": [], "udp": []}
+
+        # Iterate over scanned protocols and ports
+        for proto in nm[host].all_protocols():
+            for port in nm[host][proto]:
+                # Classify the port and add it to the open_ports list
+                port_info = {"port": port, "severity": classify_port(port)}
+                open_ports[proto].append(port_info)
+
+        # Calculate the host severity based on open ports
+        host_severity = classify_host_severity(open_ports)
+
+        return open_ports, host_severity
+
+    except Exception as e:
+        print(f"Error scanning host {host}: {e}")
+        return {"tcp": [], "udp": []}, "low"
 
 def send_results(host, open_ports, host_severity):
     """Sends scan results to the receiver server."""

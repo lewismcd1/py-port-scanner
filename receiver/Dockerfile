@@ -11,7 +11,7 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose the port the receiver listens on
-EXPOSE 5000
+EXPOSE 5001
 
 # Command to run the receiver
 CMD ["python3", "receiver.py"]

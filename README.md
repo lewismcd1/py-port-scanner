@@ -98,7 +98,7 @@ The scanner will run on a separate EC2 instance and send scan results to the rec
         ```
 6. Update scanner.py configuration to point RECEIVER_URL to the receiver EC2 instance, and TARGETS to the required scanning target IP address or CIDR block
         ```python
-        RECEIVER_URL = "http://<RECEIVER_IP>:5000/report"
+        RECEIVER_URL = "http://<RECEIVER_IP>:5001/report"
         TARGETS = ["<target-ip-or-cidr>"]
         ```
 7. [optional] Create a cron job to automatically run the scanner on a schedule.

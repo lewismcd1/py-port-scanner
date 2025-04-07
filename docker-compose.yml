@@ -3,12 +3,12 @@ services:
     build:
       context: ./receiver
     ports:
-      - "5000:5000"
+      - "5001:5001"
     container_name: receiver
 
   scanner1:
     build:
-      context: ./scanner1
+      context: ./scanner
     ports:
       - "22:22"
       - "80:80"
@@ -19,7 +19,7 @@ services:
 
   scanner2:
     build:
-      context: ./scanner2
+      context: ./scanner
     ports:
       - "3306:3306"
       - "5432:5432"
