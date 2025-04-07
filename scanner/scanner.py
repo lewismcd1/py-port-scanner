@@ -14,7 +14,10 @@ try:
 except ValueError:
     # If it's not a valid CIDR block, treat it as a single IP address
     TARGETS = [TARGET_INPUT]
+
+# Uncomment to use for local testing
 # RECEIVER_URL = "http://127.0.0.1:5001/report"
+
 # Uncomment to use for Docker container
 RECEIVER_URL = "http://receiver:5001/report"
 

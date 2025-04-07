@@ -148,3 +148,15 @@ The scanner will run on a separate EC2 instance and send scan results to the rec
     - Send data to Azure tables from DynamoDB using a mixture of AWS Glue/Step Functions
     - Create data source from azure tables to use in PowerBI
     - Create a user friendly dashboard, with filters etc.
+    
+### **6. Integrate with a Vulnerability Management Tool**
+- **Objective**: Enhance the scanner's functionality by linking it with a vulnerability management tool to provide detailed insights into the detected open ports.
+- **Implementation**:
+  - Use tools like **Nessus** or **Qualys** to perform vulnerability assessments on the scanned hosts.
+  - After scanning, send the list of open ports to the vulnerability tool's API for further analysis.
+  - Retrieve vulnerability reports and correlate them with the scan results to provide a comprehensive risk assessment.
+  - Example Workflow:
+    1. The scanner identifies open ports on a target host.
+    2. The list of open ports is sent to the vulnerability tool for analysis.
+    3. The receiver processes the vulnerability report and stores it alongside the scan results.
+    4. Generate alerts or reports based on the combined data from the scanner and the vulnerability tool.
