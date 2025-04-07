@@ -1,0 +1,34 @@
+# Byte-compiled Python files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+.env/
+.venv/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Python-specific files
+*.sqlite3
+*.db
+
+# Scan results
+receiver/scan_results.json
+
+# IDE-specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Dependency files
+*.egg-info/
+*.lock

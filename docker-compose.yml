@@ -1,0 +1,29 @@
+services:
+  receiver:
+    build:
+      context: ./receiver
+    ports:
+      - "5000:5000"
+    container_name: receiver
+
+  scanner1:
+    build:
+      context: ./scanner1
+    ports:
+      - "22:22"
+      - "80:80"
+      - "443:443"
+    container_name: scanner1
+    depends_on:
+      - receiver
+
+  scanner2:
+    build:
+      context: ./scanner2
+    ports:
+      - "3306:3306"
+      - "5432:5432"
+      - "8080:8080"
+    container_name: scanner2
+    depends_on:
+      - receiver
